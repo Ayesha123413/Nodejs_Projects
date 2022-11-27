@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout Account Page</title>
+  </head>
+  <body>
+    <label for="basic">Basic Membership for $50</label>
+    <input type="radio" name="product" id="basic" value="BASIC" />
+    <label for="pro">Pro Membership for $100</label>
+    <input type="radio" name="product" id="pro" value="PRO" />
+    <button id="checkout-button">Buy Now</button>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="js/account.js"></script>
+</html>
