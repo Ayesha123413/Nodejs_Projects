@@ -1,0 +1,175 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+* ::-webkit-scrollbar {
+  display: none;
+}
+
+main {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+main header {
+  background-color: rgb(159, 102, 102);
+  color: white;
+  padding: 7px 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+main header button {
+  background-color: transparent;
+  border: none;
+  display: none;
+}
+main header div.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+main header div.title h1 {
+  font-family: "Baloo 2", cursive;
+  font-size: 32px;
+  margin-left: 10px;
+}
+main div.container {
+  background-color: rgb(255, 226, 226);
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+main div.container div.users-window {
+  width: 350px;
+  color: whitesmoke;
+  background-color: rosybrown;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+main div.container div.users-window div.users-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+main div.container div.users-window div.users-head h4 {
+  background-color: rgb(255, 226, 226);
+  padding: 0px 8px;
+  border-radius: 50px;
+  color: rosybrown;
+}
+main div.container div.users-window div.users-list p {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+main div.container div.chat-window {
+  width: 100%;
+  background-color: rosybrown;
+  border-radius: 10px;
+}
+main div.container div.chat-window div.chats {
+  height: 65vh;
+  padding: 15px 20px;
+  overflow-y: auto;
+}
+main div.container div.chat-window div.chats div.user-join {
+  font-size: 0.9rem;
+  color: rgb(159, 102, 102);
+  background-color: whitesmoke;
+  border-radius: 50px;
+  padding: 7px 20px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  margin: 0px auto;
+  margin-bottom: 15px;
+}
+main div.container div.chat-window div.chats div.message {
+  color: rgb(159, 102, 102);
+  background-color: whitesmoke;
+  padding: 5px 15px;
+  max-width: 400px;
+  margin-bottom: 15px;
+  border-radius: 10px 50px 50px 10px;
+}
+main div.container div.chat-window div.chats div.message p {
+  font-size: 16px;
+}
+main div.container div.chat-window div.chats div.outgoing {
+  margin-left: auto;
+  color: whitesmoke;
+  background-color: rgb(159, 102, 102);
+  border-radius: 50px 10px 10px 50px;
+  text-align: right;
+}
+main div.container div.chat-window div.user-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 10px;
+}
+main div.container div.chat-window div.user-input input {
+  font-size: 16px;
+  font-size: 16px;
+  background-color: whitesmoke;
+  padding: 10px 20px;
+  outline: none;
+  border: none;
+  width: 100%;
+  border-radius: 50px 0px 0px 50px;
+}
+main div.container div.chat-window div.user-input button {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 5px 15px;
+  border: none;
+  outline: none;
+  letter-spacing: 0.5px;
+  color: whitesmoke;
+  background-color: rgb(159, 102, 102);
+  border-radius: 0px 50px 50px 0px;
+}
+
+@media screen and (max-width: 900px) {
+  main {
+    width: 95%;
+  }
+  main header button {
+    display: block;
+  }
+  main div.container {
+    position: relative;
+  }
+  main div.container div.users-window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 0px 0px 10px 10px;
+    height: -webkit-max-content;
+    height: -moz-max-content;
+    height: max-content;
+    z-index: 11;
+    box-shadow: 0px 15px 20px -20px black;
+    padding-bottom: 0;
+    display: none;
+  }
+  main div.chat-window div.chats div.message {
+    max-width: 300px;
+  }
+}/*# sourceMappingURL=index.css.map */
