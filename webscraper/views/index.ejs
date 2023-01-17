@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web scrapping</title>
+</head>
+<body>
+    <style>
+        body{
+            background-color: bisque;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        form{
+            margin-top: 150px;
+            width: 300px;
+            max-width: 450px;
+            border: 2px solid salmon;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-self: center;
+        }
+        form input{
+            margin-bottom: 15px;
+            padding: 10px;
+        }
+        form button{
+            padding: 8px;
+            color:cornsilk;
+            background-color: salmon;
+            border: 2px solid salmon;
+            font-size: 16px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+        form button:hover{
+            color: salmon;
+            background-color: cornsilk;
+            border: 2px solid salmon;
+        }
+        .container{
+            display:flex ;
+            justify-content: center;
+        }
+        .value{
+            color: salmon;
+            font-size: 30px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+    </style>
+   <form action="send-url" method="post">
+    <input type="text"  placeholder="Type your URL here" name="myurl" >
+    <button type="submit">Send</button>
+   </form>
+
+   <div class="container">
+    <p class="value">
+        <% if(value!=' '){ %>
+          <%=  title %>
+        <%   } %>
+    </p>
+   </div>
+  
+</body>
+</html>
