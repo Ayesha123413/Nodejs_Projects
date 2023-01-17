@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+  </head>
+  <body>
+    <style>
+      body {
+        background-color: rgb(68, 63, 63);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      form {
+        margin-top: 150px;
+        width: 300px;
+        max-width: 450px;
+        border: 2px solid rgb(0, 255, 225);
+        padding: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-self: center;
+      }
+      form input {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: white;
+      }
+      form button {
+        padding: 8px;
+        color: rgb(2, 231, 219);
+        background-color: white;
+        border: 2px solid rgb(2, 231, 219);
+        font-size: 18px;
+        font-weight: bold;
+        font-family: serif;
+      }
+      form button:hover {
+        color: white;
+        background-color: rgb(2, 231, 219);
+        border: 2px solid white;
+      }
+    </style>
+    <form action="/" method="post">
+      <input type="text" name="cityName" placeholder="Enter Location here" />
+      <button type="submit">Search</button>
+    </form>
+  </body>
+</html>
