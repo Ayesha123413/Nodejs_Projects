@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doc to Pdf</title>
+  </head>
+  <body>
+    <style>
+      body {
+        background-color: rgba(222, 255, 144, 0.935);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      form {
+        margin-top: 150px;
+        width: 300px;
+        max-width: 450px;
+        border: 2px solid rgb(157, 230, 40);
+        padding: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-self: center;
+      }
+      form input {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid black;
+      }
+      form button {
+        padding: 8px;
+        color: rgb(157, 230, 40);
+        border: 2px solid rgb(157, 230, 40);
+        background-color: white;
+        font-size: 18px;
+        font-weight: bolder;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+      form button:hover {
+        color: white;
+        background-color: rgb(157, 230, 40);
+        border: 2px solid white;
+      }
+    </style>
+    <form action="/docxtopdf" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" required />
+      <button type="submit">DoctoPdf</button>
+    </form>
+  </body>
+</html>
