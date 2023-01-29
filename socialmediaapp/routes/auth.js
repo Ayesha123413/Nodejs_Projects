@@ -5,9 +5,9 @@ import bcrypt from 'bcrypt'
 
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body
+    const { userName, email, password } = req.body
 
-    if (!name || !email || !password) {
+    if (!userName || !email || !password) {
       res.json({ message: 'fill all fields!' })
     }
 
@@ -22,7 +22,10 @@ router.post('/register', async (req, res) => {
       password: _password,
     })
 
-    res.status(200).json(createUser)
+    res.status(200).json({
+      message: 'Account has been created!',
+      data: createUser,
+    })
   } catch (err) {
     res.status(500).json(err)
   }

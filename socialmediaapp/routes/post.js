@@ -61,6 +61,21 @@ router.delete('/deletepost/:id', async (req, res) => {
     res.status(500).json(err)
   }
 })
+////Get a post
+router.get('/getapost/:id', async (req, res) => {
+  try {
+    const _id = req.params.id
+    const post = await Post.findById(_id)
+    const { createdAt, updatedAt, ...others } = post._doc
+
+    res.json({
+      status: 'true',
+      data: others,
+    })
+  } catch (err) {
+    res.status(500).json(err)
+  }
+})
 
 //Get all post
 router.get('/getallposts', async (req, res) => {
@@ -73,6 +88,50 @@ router.get('/getallposts', async (req, res) => {
     })
   } catch (err) {
     res.status(500).json(err)
+  }
+})
+
+//like and dislike a post
+
+router.put('/like/:id', async (req, res) => {
+  try {
+    const _id = req.params.id
+    const post = await Post.findById(_id)
+    if (!post.likes.includes(req.body.userId)) {
+      await post.updateOne({ $push: { likes: req.body.userId } })
+      res.status(200).json({
+        message: 'You liked the post!',
+      })
+    } else {
+      await post.updateOne({ $pull: { likes: req.body.userId } })
+      res.status(200).json({
+        message: 'You disliked the post!',
+      })
+    }
+  } catch (error) {
+    res.status(500).json()
+  }
+})
+
+//get a timeline
+
+router.get('/timeline', async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.body.userId)
+    //get all of your posts
+    const userPosts = await Post.find({ userId: currentUser._id })
+    //get posts of account you are following
+    const friendsPost = await Promise.all(
+      currentUser.followings.map((Id) => {
+        console.log(Id)
+        return Post.find({ userId: Id })
+      }),
+    )
+    console.log(friendsPost)
+    const allPosts = userPosts.concat(...friendsPost)
+    res.json(allPosts)
+  } catch (error) {
+    res.status(500).json()
   }
 })
 
