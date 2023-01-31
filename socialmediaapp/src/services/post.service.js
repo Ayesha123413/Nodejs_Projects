@@ -1,26 +1,35 @@
-import express from 'express'
-const router = express.Router()
-import User from '../models/user.js'
 import Post from '../models/post.js'
+import User from '../models/user.js'
+import * as dotenv from 'dotenv'
+import { addImage } from '../Utilities/image.js'
 
-//create new post
-router.post('/createpost', async (req, res) => {
-  const { userId, description } = req.body
+dotenv.config()
+
+const createPost = async (req) => {
   try {
-    const postCreated = await Post.create({ userId, description })
+    const { userId, image, description } = req.body
+    let profile = null
+    //base64 that is start with data then save it to profile after converting it into original data
+    if (image.startsWith('data')) {
+      profile = await addImage(image)
+    }
+    const postCreated = await Post.create({
+      userId,
+      image: profile,
+      description,
+    })
     console.log(postCreated)
-    res.json({
+    return {
       status: 'true',
       message: 'Post created ',
       data: postCreated,
-    })
+    }
   } catch (err) {
-    res.status(500).json(err)
+    return { status: true, message: err.message }
   }
-})
+}
 
-//update post
-router.post('/updatepost/:id', async (req, res) => {
+const updatePost = async (req, res) => {
   const _id = req.params.id
   try {
     const post = await Post.findById(_id)
@@ -28,21 +37,23 @@ router.post('/updatepost/:id', async (req, res) => {
     //check userId of post is same as userId of the user who trying to update the post
     if (post.userId === req.body.userId) {
       await post.updateOne(req.body, { new: true })
-      res.json({
+      return {
         status: 'true',
         message: 'Post has been  updated ',
         data: post,
-      })
+      }
     } else {
-      res.status(403).json('Unauthorize user,You can only update your post')
+      return {
+        status: false,
+        message: 'Unauthorize user,You can only update your post',
+      }
     }
   } catch (err) {
-    res.status(500).json(err)
+    return { status: false, message: err.message }
   }
-})
+}
 
-//Delete post
-router.delete('/deletepost/:id', async (req, res) => {
+const deletePost = async (req) => {
   const _id = req.params.id
   try {
     const post = await Post.findById(_id)
@@ -50,72 +61,72 @@ router.delete('/deletepost/:id', async (req, res) => {
     //check userId of post is same as userId of the user who trying to delete the post
     if (post.userId === req.body.userId) {
       await post.deleteOne()
-      res.json({
+      return {
         status: 'true',
         message: 'Post has been  deleted ',
-      })
+      }
     } else {
-      res.status(403).json('Unauthorize user,You can only delete your post')
+      return {
+        status: 403,
+        message: 'Unauthorize user,You can only delete your post',
+      }
     }
   } catch (err) {
-    res.status(500).json(err)
+    return { status: false, message: err.message }
   }
-})
-////Get a post
-router.get('/getapost/:id', async (req, res) => {
+}
+
+const getPost = async (req) => {
   try {
     const _id = req.params.id
     const post = await Post.findById(_id)
     const { createdAt, updatedAt, ...others } = post._doc
 
-    res.json({
+    return {
       status: 'true',
       data: others,
-    })
+    }
   } catch (err) {
-    res.status(500).json(err)
+    return { status: false, message: err.message }
   }
-})
+}
 
-//Get all post
-router.get('/getallposts', async (req, res) => {
+const getAllPosts = async (req) => {
   try {
     const posts = await Post.find()
 
-    res.json({
+    return {
       status: 'true',
       data: posts,
-    })
+    }
   } catch (err) {
-    res.status(500).json(err)
+    return { status: false, message: err.message }
   }
-})
+}
 
-//like and dislike a post
-
-router.put('/like/:id', async (req, res) => {
+const likePost = async (req) => {
   try {
     const _id = req.params.id
     const post = await Post.findById(_id)
     if (!post.likes.includes(req.body.userId)) {
       await post.updateOne({ $push: { likes: req.body.userId } })
-      res.status(200).json({
+      return {
+        status: 200,
         message: 'You liked the post!',
-      })
+      }
     } else {
       await post.updateOne({ $pull: { likes: req.body.userId } })
-      res.status(200).json({
+      return {
+        status: 200,
         message: 'You disliked the post!',
-      })
+      }
     }
   } catch (error) {
-    res.status(500).json()
+    return { status: false, message: err.message }
   }
-})
+}
 
-//get a timeline
-
-router.get('/timeline', async (req, res) => {
+const timeline = async (req) => {
   try {
     const currentUser = await User.findById(req.body.userId)
     //get all of your posts
@@ -129,10 +140,17 @@ router.get('/timeline', async (req, res) => {
     )
     console.log(friendsPost)
     const allPosts = userPosts.concat(...friendsPost)
-    res.json(allPosts)
+    return { data: allPosts }
   } catch (error) {
-    res.status(500).json()
+    return { status: false, message: err.message }
   }
-})
-
-export { router }
+}
+export {
+  createPost,
+  updatePost,
+  deletePost,
+  getPost,
+  getAllPosts,
+  likePost,
+  timeline,
+}

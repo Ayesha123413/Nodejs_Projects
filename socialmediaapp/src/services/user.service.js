@@ -1,11 +1,9 @@
-import express from 'express'
-const router = express.Router()
 import User from '../models/user.js'
-import bcrypt from 'bcrypt'
+import * as dotenv from 'dotenv'
 
-//update user
+dotenv.config()
 
-router.post('/updateuser/:id', async (req, res) => {
+const updateUser = async (req) => {
   const _id = req.params.id
   try {
     const user = await User.findById(_id)
@@ -17,53 +15,48 @@ router.post('/updateuser/:id', async (req, res) => {
       }
       await user.updateOne(req.body, { new: true })
       console.log(user)
-      res.json({
+      return {
         status: 'true',
         message: 'Account has been  updated ',
         data: user,
-      })
+      }
     }
   } catch (err) {
-    res.status(500).json(err)
+    return { status: false, message: err.message }
   }
-})
+}
 
-//delete user
-router.delete('/deleteuser/:id', async (req, res) => {
+const deleteUser = async (req) => {
   const _id = req.params.id
 
   try {
     await User.findByIdAndDelete(_id)
-    res.json({
+    return {
       status: 'true',
       message: 'Account has been  deleted ',
-    })
+    }
   } catch (err) {
-    res.status(500).json(err)
+    return { status: false, massage: err.message }
   }
-})
+}
 
-//get a user
-
-router.get('/getuser/:id', async (req, res) => {
+const getUser = async (req) => {
   const _id = req.params.id
   try {
     const user = await User.findById(_id)
     console.log(user._doc)
     const { password, updatedAt, createdAt, ...others } = user._doc
-    res.json({
+    return {
       status: 'true',
       message: 'user has been found',
       data: others,
-    })
+    }
   } catch (err) {
-    res.status(500).json(err)
+    return { status: false, massage: err.message }
   }
-})
+}
 
-//follow a User
-
-router.put('/follow/:id', async (req, res) => {
+const followUser = async (req, res) => {
   if (req.body.userId !== req.params.id) {
     try {
       const user = await User.findById(req.params.id)
@@ -74,21 +67,25 @@ router.put('/follow/:id', async (req, res) => {
         console.log(!user.followers.includes(req.body.UserId))
         await user.updateOne({ $push: { followers: req.body.userId } })
         await currentUser.updateOne({ $push: { followings: req.params.id } })
-        res.status(200).json({
+        return {
+          status: true,
           message: 'You are now following this Account!',
-        })
+        }
       } else {
-        res.status(403).json({
+        return {
+          status: 403,
           message: 'You already followed this account!',
-        })
+        }
       }
     } catch (error) {
-      res.status(500).json(error)
+      return { status: false, massage: err.message }
     }
   } else {
-    res.status(403).json({
+    return {
+      status: 403,
       message: 'You cannot follow yourself! ',
-    })
+    }
   }
-})
-export { router }
+}
+
+export { updateUser, deleteUser, getUser, followUser }

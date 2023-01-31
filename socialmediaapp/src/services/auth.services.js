@@ -1,14 +1,16 @@
-import express from 'express'
-const router = express.Router()
 import User from '../models/user.js'
+import * as dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
+import { generateAccessToken } from '../Utilities/authentication.js'
 
-router.post('/register', async (req, res) => {
+dotenv.config()
+
+const registerUser = async (req) => {
   try {
     const { userName, email, password } = req.body
 
     if (!userName || !email || !password) {
-      res.json({ message: 'fill all fields!' })
+      return { message: 'fill all fields!' }
     }
 
     //Hashing pssword
@@ -22,44 +24,52 @@ router.post('/register', async (req, res) => {
       password: _password,
     })
 
-    res.status(200).json({
+    return {
+      status: 200,
       message: 'Account has been created!',
       data: createUser,
-    })
+    }
   } catch (err) {
-    res.status(500).json(err)
+    return {
+      status: 500,
+      message: err.message,
+    }
   }
-})
+}
 
-router.post('/login', async (req, res) => {
+const loginUser = async (req) => {
   try {
     const { email, password } = req.body
 
     if (!email || !password) {
-      res.json({ message: 'please fill the data' })
+      return { message: 'please fill the data' }
     }
     const _userExist = await User.findOne({ email: email })
     //compare password
     if (_userExist) {
       const passwordMatch = await bcrypt.compare(password, _userExist.password)
       if (passwordMatch) {
-        res.status(200).json({
+        let token = await generateAccessToken(_userExist)
+        return {
+          status: 200,
           message: 'you are logged in',
-          data: { user: _userExist },
-        })
+          data: { token: token, user: _userExist },
+        }
       }
-      res.status(404).json({
-        status: false,
+      return {
+        status: 404,
         message: 'Wrong password',
-      })
+      }
     }
-    res.json({
+    return {
       status: false,
       message: 'Wrong credentials',
-    })
+    }
   } catch (err) {
-    res.status(500).json(err)
+    return {
+      status: 500,
+      message: err.message,
+    }
   }
-})
-
-export { router }
+}
+export { registerUser, loginUser }
